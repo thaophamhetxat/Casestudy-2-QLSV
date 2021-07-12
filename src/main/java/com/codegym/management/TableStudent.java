@@ -4,9 +4,14 @@ package com.codegym.management;
 import com.codegym.help.HuongDan;
 import com.codegym.quanlysinhvien.SortStudent;
 import com.codegym.quanlysinhvien.Student;
+import static java.awt.AWTEventMulticaster.add;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,8 +20,8 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class TableStudent extends javax.swing.JFrame {
-    private final  List<Student>students;
-    private final DefaultTableModel tblModel;
+    private   List<Student>students;
+    private  DefaultTableModel tblModel;
     private int selected;
     private boolean rootPanelCheckingEnabled;
     static SortStudent sortStudent = new SortStudent();
@@ -34,6 +39,8 @@ public class TableStudent extends javax.swing.JFrame {
         login.setVisible(true);
     }
     public void addStudent(Student student){
+        
+        
         students.add(student);
         showData();
 
@@ -382,6 +389,7 @@ public class TableStudent extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        
         AddStudent add = new AddStudent(this,rootPanelCheckingEnabled);
         add.setVisible(true);
     }//GEN-LAST:event_btnAddActionPerformed
@@ -412,15 +420,11 @@ public class TableStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnWriteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWriteActionPerformed
+List<Student>students = new ArrayList<>();
         try {
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("sinhVien.csv"));
-            String tieuDe = "Mã sinh viên,Tên sinh viên ,Tuổi,Số điện thoại,Địa chỉ,Giới tính,Điểm lý thuyết,Điểm thực hành";
-            bufferedWriter.write(tieuDe);
-            for (Student sv : students) {
-                bufferedWriter.newLine();
-                bufferedWriter.write(sv.list());
-            }
-            bufferedWriter.close();
+           FileOutputStream fileOutputStream = new FileOutputStream("sinhVien.csv");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(students);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -448,6 +452,20 @@ public class TableStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+File file = new File("C:\\Users\\ThaoLan\\Documents\\NetBeansProjects\\QuanLySinhVien");
+JOptionPane.showMessageDialog(this,file.getParent(),"Đường dẫn file",JOptionPane.PLAIN_MESSAGE);
+
+           List<Student> students = new ArrayList<>();
+        try {
+                    FileInputStream fileInputStream = new FileInputStream("sinhVien.csv");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        students = (ArrayList<Student>) objectInputStream.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }        
+       
+        System.out.println(students);
+        
 
     }//GEN-LAST:event_btnOpenActionPerformed
 

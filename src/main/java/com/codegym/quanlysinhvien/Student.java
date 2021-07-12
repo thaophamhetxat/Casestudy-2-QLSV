@@ -8,8 +8,8 @@ private int tuoiSinhVien;
 private String diaChi;
 private String soDienThoai;
 private String gioiTinh;
-private float diemLyThuyet;
-private float diemThucHanh;
+private float diemLyThuyet=0;
+private float diemThucHanh=0;
 private float diemTrungBinh;
 public Student(){}
 
@@ -103,6 +103,7 @@ public Student(){}
     }
 
     public float getDiemThucHanh() {
+
         return diemThucHanh;
     }
 
